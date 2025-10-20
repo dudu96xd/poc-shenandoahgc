@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  app-g1:
+    image: poc-gc-java25
+    container_name: app-g1
+    ports: [ "8081:8080" ]
+    environment:
+      GC: "g1"
+      HEAP: "2g"
+      JAVA_OPTS: >-
+        -Xlog:gc*,safepoint=info:file=/logs/gc-g1-%p-%t.log:tags,uptime,level,timemillis
+        -XX:StartFlightRecording=filename=/logs/jfr-g1-%p-%t.jfr,settings=profile,maxsize=256m
+    volumes:
+      - ../out:/logs
+
+  app-zgc:
+    image: poc-gc-java25
+    container_name: app-zgc
+    ports: [ "8082:8080" ]
+    environment:
+      GC: "zgc"
+      HEAP: "2g"
+      JAVA_OPTS: >-
+        -Xlog:gc*,safepoint=info:file=/logs/gc-zgc-%p-%t.log:tags,uptime,level,timemillis
+        -XX:StartFlightRecording=filename=/logs/jfr-zgc-%p-%t.jfr,settings=profile,maxsize=256m
+    volumes:
+      - ../out:/logs
+
+  app-shen:
+    image: poc-gc-java25
+    container_name: app-shen
+    ports: [ "8083:8080" ]
+    environment:
+      GC: "shen"
+      HEAP: "2g"
+      JAVA_OPTS: >-
+        -Xlog:gc*,safepoint=info:file=/logs/gc-shen-%p-%t.log:tags,uptime,level,timemillis
+        -XX:StartFlightRecording=filename=/logs/jfr-shen-%p-%t.jfr,settings=profile,maxsize=256m
+    volumes:
+      - ../out:/logs
